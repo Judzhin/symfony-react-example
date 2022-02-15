@@ -11,22 +11,34 @@ class TodoContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [{id:1, task: 'Do Something'}]
+            todos: [{
+                id: 1,
+                task: 'Do Something'
+            }, {
+                id: 2,
+                task: 'Do Something'
+            }, {
+                id: 3,
+                task: 'Do Something'
+            }]
         }
     }
 
     // create
-    createTodo(){
+    createTodo() {
 
     }
+
     // read
     readTodo() {
 
     }
+
     // update
     updateTodo() {
 
     }
+
     // delete
     deleteTodo() {
 
