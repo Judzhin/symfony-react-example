@@ -1,12 +1,13 @@
 import React from "react";
-import logo from './logo.svg';
 import './App.css';
+import TodoContextProvider from "./context/TodoContext";
+import TodoTable from "./components/TodoTable";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Example Page!!!</h1>
-    </div>
+    <TodoContextProvider>
+      <TodoTable />
+    </TodoContextProvider>
   );
 }
 
