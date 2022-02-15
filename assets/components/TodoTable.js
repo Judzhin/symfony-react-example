@@ -8,7 +8,7 @@ import {
     TableBody,
     TableRow,
     Paper,
-    IconButton, TextField
+    IconButton, TextField, Box
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,19 +21,21 @@ function TodoTable() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell component="th" scope="row">
-                            <TextField label="Write a task" variant="standard" fullWidth={true} />
-                        </TableCell>
-                        <TableCell component="th" scope="row" align="center" width={80}>
-                            <IconButton>
-                                <AddIcon />
-                            </IconButton>
-                        </TableCell>
+
+                            <TableCell component="th" scope="row">
+                                <TextField label="Write a new task" variant="standard" fullWidth={true} />
+                            </TableCell>
+                            <TableCell component="th" scope="row" align="center" width={80}>
+                                <IconButton>
+                                    <AddIcon />
+                                </IconButton>
+                            </TableCell>
+
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {context.todos.map(todo => (
-                        <TableRow key={todo.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    {context.todos.map((todo, i) => (
+                        <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell component="th" scope="row">
                                 {todo.task}
                             </TableCell>
