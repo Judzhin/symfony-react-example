@@ -1,4 +1,4 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {Component, Fragment, useContext, useState} from 'react';
 import {TodoContext} from "../context/TodoContext";
 import {
     Table,
@@ -13,18 +13,30 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 function TodoTable() {
     const context = useContext(TodoContext);
     const [addTodo, setAddTodo] = useState('');
-    console.log('addTodo:', addTodo);
+    const [editIsShow, setEditIsShow] = useState(false);
+    const [editTodo, setEditTodo] = useState('');
 
+    /**
+     *
+     * @param e
+     */
     const onSubmitForm = (e) => {
         e.preventDefault();
         context.createTodo({task: addTodo});
         setAddTodo('');
     }
 
+    /**
+     *
+     * @param e
+     */
     const onChangeTextField = (e) => {
         setAddTodo(e.target.value);
     }
@@ -52,15 +64,43 @@ function TodoTable() {
                         {context.todos.slice().reverse().map((todo, i) => (
                             <TableRow key={i} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                 <TableCell component="th" scope="row">
-                                    {todo.task}
+                                    {editIsShow === todo.id ?
+                                        <TextField value={editTodo} variant="standard" fullWidth={true} onChange={e => {
+                                            e.preventDefault();
+                                            setEditTodo(e.target.value);
+                                        }} /> : todo.task
+                                    }
                                 </TableCell>
                                 <TableCell component="th" scope="row" align="right">
-                                    <IconButton>
-                                        <EditIcon/>
-                                    </IconButton>
-                                    <IconButton>
-                                        <DeleteIcon/>
-                                    </IconButton>
+                                    {editIsShow === todo.id ? (
+                                        <Fragment>
+                                            <IconButton onClick={() => {
+                                                context.updateTodo({id: todo.id, task: editTodo})
+                                                setEditIsShow(false);
+                                                setEditTodo('');
+                                            }}>
+                                                <DoneIcon />
+                                            </IconButton>
+                                            <IconButton onClick={() => {
+                                                setEditIsShow(false);
+                                                setEditTodo('');
+                                            }}>
+                                                <CancelIcon/>
+                                            </IconButton>
+                                        </Fragment>
+                                    ): (
+                                        <Fragment>
+                                            <IconButton onClick={() => {
+                                                setEditIsShow(todo.id);
+                                                setEditTodo(todo.task);
+                                            }}>
+                                                <EditIcon/>
+                                            </IconButton>
+                                            <IconButton>
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        </Fragment>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

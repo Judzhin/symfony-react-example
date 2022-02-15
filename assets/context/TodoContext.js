@@ -11,14 +11,26 @@ class TodoContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: []
+            todos: [{
+                id: 1,
+                task: 'ToDo SomeThink'
+            }, {
+                id: 2,
+                task: 'Write a Code'
+            }, {
+                id: 3,
+                task: 'Drop machine'
+            }]
         }
     }
 
-    // create
-    createTodo(todo) {
+    /**
+     *
+     * @param newTodo
+     */
+    createTodo(newTodo) {
         let data = [...this.state.todos];
-        data.push(todo)
+        data.push(newTodo)
         this.setState({
             // todos: [todo].concat(data)
             todos: data
@@ -30,9 +42,26 @@ class TodoContextProvider extends Component {
 
     }
 
-    // update
-    updateTodo() {
+    /**
+     *
+     * @param editTodo
+     */
+    updateTodo(editTodo) {
+        // let data = [];
+        // this.state.todos.forEach(todo => {
+        //     if (todo.id === editTodo.id) {
+        //         return data.push(editTodo);
+        //     }
+        //     data.push(todo);
+        // });
 
+        let data = [...this.state.todos];
+        let todo = data.find(todo => todo.id === editTodo.id);
+        todo.task = editTodo.task
+
+        this.setState({
+            todos: data
+        })
     }
 
     // delete
