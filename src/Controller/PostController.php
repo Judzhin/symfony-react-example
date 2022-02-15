@@ -6,11 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexController extends AbstractController
+class PostController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/posts', name: 'posts')]
     public function index(): Response
     {
-        return $this->render('index/index.html.twig');
+        return $this->json([
+            'ping' => 'test'
+        ]);
     }
 }
