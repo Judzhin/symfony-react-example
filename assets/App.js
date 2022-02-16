@@ -7,7 +7,7 @@ import {Container, CssBaseline, Typography} from "@mui/material";
 function App() {
     return (
         <Container maxWidth="lg">
-            <Typography variant="h1" component="div" gutterBottom>
+            <Typography variant="h3" component="div" mt={2} mb={3}>
                 ToDo List:
             </Typography>
             <TodoContextProvider>
