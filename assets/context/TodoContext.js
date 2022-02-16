@@ -10,17 +10,19 @@ class TodoContextProvider extends Component {
      */
     constructor(props) {
         super(props);
+        let todos = [{
+            id: 1,
+            task: 'ToDo SomeThink'
+        }, {
+            id: 2,
+            task: 'Write a Code'
+        }, {
+            id: 3,
+            task: 'Drop machine'
+        }];
         this.state = {
-            todos: [{
-                id: 1,
-                task: 'ToDo SomeThink'
-            }, {
-                id: 2,
-                task: 'Write a Code'
-            }, {
-                id: 3,
-                task: 'Drop machine'
-            }]
+            lastIdentifier: todos.length,
+            todos: todos
         }
     }
 
@@ -30,7 +32,8 @@ class TodoContextProvider extends Component {
      */
     createTodo(newTodo) {
         let data = [...this.state.todos];
-        data.push(newTodo)
+        newTodo['id'] = ++(this.state.lastIdentifier);
+        data.push(newTodo);
         this.setState({
             // todos: [todo].concat(data)
             todos: data
@@ -65,8 +68,17 @@ class TodoContextProvider extends Component {
     }
 
     // delete
-    deleteTodo() {
+    deleteTodo(deleteTodo) {
+        // let data = [...this.state.todos].filter(todo => todo.id !== deleteTodo.id);
+        let data = [...this.state.todos], todo = data.find(todo => {
+            return todo.id === deleteTodo.id;
+        });
 
+        data.splice(data.indexOf(todo), 1);
+
+        this.setState({
+            todos: data
+        })
     }
 
     render() {

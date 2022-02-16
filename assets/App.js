@@ -2,7 +2,7 @@ import React from "react";
 import './App.css';
 import TodoContextProvider from "./context/TodoContext";
 import TodoTable from "./components/TodoTable";
-import {Container, Typography} from "@mui/material";
+import {Container, CssBaseline, Typography} from "@mui/material";
 
 function App() {
     return (
