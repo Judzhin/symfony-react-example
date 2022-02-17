@@ -23,12 +23,25 @@ class TodoContextProvider extends Component {
         // }];
         this.state = {
             // lastIdentifier: todos.length,
-            todos: [] // todos
+            todos: [], // todos
+            message: ''
         }
     }
 
     componentDidMount() {
         this.readTodo();
+    }
+
+    // read
+    readTodo() {
+
+        axios.get('/api/tasks/')
+            .then(response => {
+                this.setState({todos: response.data})
+            })
+            .catch(err => {
+                // console.error(err);
+            });
     }
 
     /**
@@ -49,23 +62,11 @@ class TodoContextProvider extends Component {
         axios.post('/api/tasks/', newTodo)
             .then(response => {
                 let data = [...this.state.todos];
-                data.push(response.data);
+                data.push(response.data.data.todo);
                 this.setState({
                     todos: data
                 });
             })
-    }
-
-    // read
-    readTodo() {
-
-        axios.get('/api/tasks/')
-            .then(response => {
-                this.setState({todos: response.data})
-            })
-            .catch(err => {
-                // console.error(err);
-            });
     }
 
     /**
@@ -138,7 +139,9 @@ class TodoContextProvider extends Component {
                 ...this.state,
                 createTodo: this.createTodo.bind(this),
                 updateTodo: this.updateTodo.bind(this),
-                deleteTodo: this.deleteTodo.bind(this)
+                deleteTodo: this.deleteTodo.bind(this),
+                // for snackbar
+                setMessage: (message) => this.setState({message: message})
             }}>
                 {this.props.children}
             </TodoContext.Provider>

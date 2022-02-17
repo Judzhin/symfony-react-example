@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Builder\JsonResponseBuilder;
 use App\Entity\Task;
 use App\Message\TaskDeleteMessage;
 use App\Message\TaskUpdateMessage;
@@ -59,7 +60,12 @@ class TasksController extends AbstractController
         $task = (new Task)->setName($content->name);
         $this->entityManager->persist($task);
         $this->entityManager->flush();
-        return $this->createResponse(self::serialize($task));
+
+        // return $this->createResponse(self::serialize($task));
+
+        $jsonBuilder = new JsonResponseBuilder;
+        $jsonBuilder->addData('todo', self::serialize($task));
+        return $jsonBuilder->build();
     }
 
     /**
@@ -84,7 +90,11 @@ class TasksController extends AbstractController
 
         // Async mode
         $bus->dispatch(new TaskUpdateMessage($id, $content->name));
-        return $this->respondWithSuccess('Task was updated!');
+
+        // return $this->respondWithSuccess('Task was updated!');
+
+        $jsonBuilder = (new JsonResponseBuilder)->success('Task was updated!');
+        return $jsonBuilder->build();
     }
 
     /**
@@ -106,7 +116,11 @@ class TasksController extends AbstractController
 
         // Async mode
         $bus->dispatch(new TaskDeleteMessage($id));
-        return $this->respondWithSuccess('Task has been deleted.');
+
+        // return $this->respondWithSuccess('Task has been deleted.');
+
+        $jsonBuilder = (new JsonResponseBuilder)->success('Task has been deleted.');
+        return $jsonBuilder->build();
 
     }
 }
