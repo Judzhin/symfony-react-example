@@ -70,7 +70,10 @@ class TasksController extends AbstractController
         $builder = new JsonResponseBuilder;
         return $builder
             ->addData(self::serialize($task))
-            ->success('Task has been created.')
+            ->success([
+                'To-Do has been created!',
+                "Task: {$task->getName()}"
+            ])
             ->build();
     }
 
@@ -124,7 +127,6 @@ class TasksController extends AbstractController
 
         // Async mode
         $bus->dispatch(new TaskDeleteMessage($id));
-
         // return $this->respondWithSuccess('Task has been deleted.');
 
         $builder = (new JsonResponseBuilder);

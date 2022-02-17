@@ -1,23 +1,27 @@
-import React, {useContext} from 'react';
+import React, {Fragment, useContext} from 'react';
 import {Button, Snackbar, SnackbarContent} from "@mui/material";
 import {TodoContext} from "../context/TodoContext";
 
 function AppSnackbar(props) {
     const context = useContext(TodoContext)
-
-    const doOpen = () => {
-        return context.message !== undefined
-            && 0 !== context.message.length ;
-    }
-    const resetMessage = () => {
+    const closeHandler = () => {
         context.setMessage('')
     }
     return (
-        <Snackbar open={doOpen()} autoHideDuration={6000} variant={'success'} onClose={resetMessage}>
-            <SnackbarContent message={context.message} variant={'success'} action={[
-                <Button key={'dismiss'} onClick={resetMessage}>Dismiss</Button>
-            ]} />
-        </Snackbar>
+        <Fragment>
+            {context.message && (
+                <Snackbar open={true} autoHideDuration={6000} onClose={closeHandler}>
+                    <SnackbarContent message={(Array.isArray(context.message) ? context.message.map((msg, idx) => (
+                        <Fragment key={idx}>
+                            <span>{msg}</span>
+                            <br/>
+                        </Fragment>
+                    )) : context.message)} action={[
+                        <Button key={'dismiss'} onClick={closeHandler}>Dismiss</Button>
+                    ]} />
+                </Snackbar>
+            )}
+        </Fragment>
     );
 }
 

@@ -44,8 +44,6 @@ class JsonResponseBuilder
             'data' => [],
             'message' => null,
         ];
-
-        // $this->strictMode($strictMode);
     }
 
     /**
@@ -54,7 +52,7 @@ class JsonResponseBuilder
      * @param bool $strictMode key
      * @return JsonResponseBuilder Current Instance
      */
-    public function strictMode(bool $strictMode = true)
+    public function strictMode(bool $strictMode = true): static
     {
         $this->strictMode = $strictMode;
         return $this;
@@ -66,7 +64,7 @@ class JsonResponseBuilder
      * @param mixed $value value
      * @return JsonResponseBuilder Current Instance
      */
-    public function addMeta(string $key, mixed $value)
+    public function addMeta(string $key, mixed $value): static
     {
         $this->data['meta'][$key] = $value;
         return $this;
@@ -77,20 +75,21 @@ class JsonResponseBuilder
      * @param array $meta meta array
      * @return JsonResponseBuilder Current Instance
      */
-    public function mergeMeta(array $meta)
+    public function mergeMeta(array $meta): static
     {
         $this->data['meta'] = array_merge($this->data['meta'], $meta);
         return $this;
     }
 
     /**
-     * ADD Data
-     * @param mixed $key
+     * Add data
+     *
+     * @param string|array $key
      * @param mixed|null $value
      * @param bool $parseMeta
      * @return $this
      */
-    public function addData(mixed $key, mixed $value = null, bool $parseMeta = false)
+    public function addData(string|array $key, mixed $value = null, bool $parseMeta = false): static
     {
         if ($parseMeta) {
             $this->parseMeta($value);
@@ -130,10 +129,10 @@ class JsonResponseBuilder
     }
 
     /**
-     * @param string|null $message
+     * @param string|array $message
      * @return $this
      */
-    protected function setMessage(string $message = null)
+    protected function setMessage(string|array $message)
     {
         if ($message) {
             $this->data['message'] = $message;
@@ -145,14 +144,13 @@ class JsonResponseBuilder
     /**
      * Set Response Status To success
      *
-     * @param string $message
+     * @param string|array $message
      * @return $this
      */
-    public function success(string $message = 'Successfully Retrieved')
+    public function success(string|array $message = 'Successfully Retrieved'): static
     {
         $this->setSuccess(true);
         $this->setMessage($message);
-
         return $this;
     }
 
