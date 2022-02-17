@@ -36,21 +36,31 @@ class TodoContextProvider extends Component {
      * @param newTodo
      */
     createTodo(newTodo) {
-        let data = [...this.state.todos];
-        newTodo['id'] = ++(this.state.lastIdentifier);
-        data.push(newTodo);
-        this.setState({
-            // todos: [todo].concat(data)
-            todos: data
-        });
+        // Sync Method
+        // let data = [...this.state.todos];
+        // newTodo['id'] = ++(this.state.lastIdentifier);
+        // data.push(newTodo);
+        // this.setState({
+        //     // todos: [todo].concat(data)
+        //     todos: data
+        // });
+
+        // Async Method
+        axios.post('/api/tasks/', newTodo)
+            .then(response => {
+                let data = [...this.state.todos];
+                data.push(response.data);
+                this.setState({
+                    todos: data
+                });
+            })
     }
 
     // read
     readTodo() {
 
-        axios.get('/api/tasks')
+        axios.get('/api/tasks/')
             .then(response => {
-                console.log('Load Done');
                 this.setState({todos: response.data})
             })
             .catch(err => {
