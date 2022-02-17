@@ -3,6 +3,7 @@ import './App.css';
 import TodoContextProvider from "./context/TodoContext";
 import TodoTable from "./components/TodoTable";
 import {Container, CssBaseline, Typography} from "@mui/material";
+import AppSnackbar from "./components/AppSnackbar";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
             </Typography>
             <TodoContextProvider>
                 <TodoTable/>
+                <AppSnackbar />
             </TodoContextProvider>
         </Container>
     );

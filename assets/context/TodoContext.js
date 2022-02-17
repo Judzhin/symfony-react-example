@@ -37,7 +37,7 @@ class TodoContextProvider extends Component {
 
         axios.get('/api/tasks/')
             .then(response => {
-                this.setState({todos: response.data})
+                this.setState({todos: response.data.data})
             })
             .catch(err => {
                 // console.error(err);
@@ -61,11 +61,18 @@ class TodoContextProvider extends Component {
         // Async Method
         axios.post('/api/tasks/', newTodo)
             .then(response => {
-                let data = [...this.state.todos];
-                data.push(response.data.data.todo);
-                this.setState({
-                    todos: data
-                });
+                if (response.data.success) {
+                    let data = [...this.state.todos];
+                    data.push(response.data.data);
+                    this.setState({
+                        todos: data,
+                        message: response.data.message
+                    });
+                } else {
+                    this.setState({
+                        message: response.data.message
+                    });
+                }
             })
     }
 
@@ -95,12 +102,15 @@ class TodoContextProvider extends Component {
         // Async
         axios.put(`/api/tasks/${editTodo.id}`, editTodo)
             .then(response => {
-                let data = [...this.state.todos];
-                let todo = data.find(todo => todo.id === editTodo.id);
-                todo.name = editTodo.name
-                this.setState({
-                    todos: data
-                })
+                if (response.data.success) {
+                    let data = [...this.state.todos];
+                    let todo = data.find(todo => todo.id === editTodo.id);
+                    todo.name = editTodo.name
+                    this.setState({
+                        todos: data,
+                        message: response.data.message
+                    })
+                }
             })
     }
 
@@ -121,15 +131,18 @@ class TodoContextProvider extends Component {
         // Async
         axios.delete(`/api/tasks/${deleteTodo.id}`, deleteTodo)
             .then(response => {
-                let data = [...this.state.todos], todo = data.find(todo => {
-                    return todo.id === deleteTodo.id;
-                });
+                if (response.data.success) {
+                    let data = [...this.state.todos], todo = data.find(todo => {
+                        return todo.id === deleteTodo.id;
+                    });
 
-                data.splice(data.indexOf(todo), 1);
+                    data.splice(data.indexOf(todo), 1);
 
-                this.setState({
-                    todos: data
-                })
+                    this.setState({
+                        todos: data,
+                        message: response.data.message
+                    })
+                }
             })
     }
 

@@ -40,12 +40,16 @@ class TasksController extends AbstractController
     }
 
     /**
-     * @return Response
+     * @return JsonResponse
      */
     #[Route('/', name: 'findBy', methods: ['GET'])]
-    public function index(): Response
+    public function index(): JsonResponse
     {
-        return $this->createResponse(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
+        // return $this->createResponse(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
+
+        $builder = new JsonResponseBuilder;
+        $builder->addData(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
+        return $builder->build();
     }
 
     /**
@@ -63,9 +67,11 @@ class TasksController extends AbstractController
 
         // return $this->createResponse(self::serialize($task));
 
-        $jsonBuilder = new JsonResponseBuilder;
-        $jsonBuilder->addData('todo', self::serialize($task));
-        return $jsonBuilder->build();
+        $builder = new JsonResponseBuilder;
+        return $builder
+            ->addData(self::serialize($task))
+            ->success('Task has been created.')
+            ->build();
     }
 
     /**
@@ -93,8 +99,10 @@ class TasksController extends AbstractController
 
         // return $this->respondWithSuccess('Task was updated!');
 
-        $jsonBuilder = (new JsonResponseBuilder)->success('Task was updated!');
-        return $jsonBuilder->build();
+        $builder = (new JsonResponseBuilder);
+        return $builder
+            ->success('Task has been updated.')
+            ->build();
     }
 
     /**
@@ -119,8 +127,10 @@ class TasksController extends AbstractController
 
         // return $this->respondWithSuccess('Task has been deleted.');
 
-        $jsonBuilder = (new JsonResponseBuilder)->success('Task has been deleted.');
-        return $jsonBuilder->build();
+        $builder = (new JsonResponseBuilder);
+        return $builder
+            ->success('Task has been deleted.')
+            ->build();
 
     }
 }

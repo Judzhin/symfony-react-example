@@ -84,19 +84,23 @@ class JsonResponseBuilder
     }
 
     /**
-     * Add Data
-     * @param string $key key
-     * @param mixed $value value
-     * @param bool $parseMeta value
-     * @return JsonResponseBuilder Current Instance
+     * ADD Data
+     * @param mixed $key
+     * @param mixed|null $value
+     * @param bool $parseMeta
+     * @return $this
      */
-    public function addData(string $key, mixed $value, bool $parseMeta = false)
+    public function addData(mixed $key, mixed $value = null, bool $parseMeta = false)
     {
         if ($parseMeta) {
             $this->parseMeta($value);
         }
 
-        $this->data['data'][$key] = $value;
+        if (null !== $value) {
+            $this->data['data'][$key] = $value;
+        } else {
+            $this->data['data'] = $key;
+        }
         return $this;
     }
 
@@ -126,6 +130,19 @@ class JsonResponseBuilder
     }
 
     /**
+     * @param string|null $message
+     * @return $this
+     */
+    protected function setMessage(string $message = null)
+    {
+        if ($message) {
+            $this->data['message'] = $message;
+        }
+
+        return $this;
+    }
+
+    /**
      * Set Response Status To success
      *
      * @param string $message
@@ -135,19 +152,6 @@ class JsonResponseBuilder
     {
         $this->setSuccess(true);
         $this->setMessage($message);
-
-        return $this;
-    }
-
-    /**
-     * @param string|null $message
-     * @return $this
-     */
-    public function setMessage(string $message = null)
-    {
-        if ($message) {
-            $this->data['message'] = $message;
-        }
 
         return $this;
     }
@@ -241,7 +245,7 @@ class JsonResponseBuilder
      * @param int|null $status
      * @return JsonResponse
      */
-    public function build(int $status = null)
+    public function build(int $status = null): JsonResponse
     {
         if ($status) {
             $this->setStatus($status);
