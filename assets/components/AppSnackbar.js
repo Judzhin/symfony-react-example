@@ -5,23 +5,21 @@ import {TodoContext} from "../context/TodoContext";
 function AppSnackbar(props) {
     const context = useContext(TodoContext)
     const closeHandler = () => {
-        context.setMessage('')
+        context.setMessage(undefined)
     }
     return (
-        <Fragment>
+        <Snackbar open={context.message !== undefined} autoHideDuration={6000} onClose={closeHandler}>
             {context.message && (
-                <Snackbar open={true} autoHideDuration={6000} onClose={closeHandler}>
-                    <SnackbarContent message={(Array.isArray(context.message) ? context.message.map((msg, idx) => (
-                        <Fragment key={idx}>
-                            <span>{msg}</span>
-                            <br/>
-                        </Fragment>
-                    )) : context.message)} action={[
-                        <Button key={'dismiss'} onClick={closeHandler}>Dismiss</Button>
-                    ]} />
-                </Snackbar>
+                <SnackbarContent message={(Array.isArray(context.message) ? context.message.map((msg, idx) => (
+                    <Fragment key={idx}>
+                        <span>{msg}</span>
+                        <br/>
+                    </Fragment>
+                )) : context.message)} action={[
+                    <Button key={'dismiss'} onClick={closeHandler}>Dismiss</Button>
+                ]}/>
             )}
-        </Fragment>
+        </Snackbar>
     );
 }
 

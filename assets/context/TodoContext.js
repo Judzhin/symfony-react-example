@@ -24,7 +24,7 @@ class TodoContextProvider extends Component {
         this.state = {
             // lastIdentifier: todos.length,
             todos: [], // todos
-            message: ''
+            message: undefined
         }
     }
 
@@ -61,19 +61,24 @@ class TodoContextProvider extends Component {
         // Async Method
         axios.post('/api/tasks/', newTodo)
             .then(response => {
+                let state = {
+                    message: response.data.message
+                };
+
                 if (response.data.success) {
                     let data = [...this.state.todos];
                     data.push(response.data.data);
-                    this.setState({
-                        todos: data,
-                        message: response.data.message
-                    });
-                } else {
-                    this.setState({
-                        message: response.data.message
-                    });
+                    state = {...state, todos: data}
                 }
-            })
+
+                if (response.data.error) {
+                    console.error(response.data.error);
+                }
+
+                this.setState(state);
+            }).catch(error => {
+                console.log(error);
+        })
     }
 
     /**

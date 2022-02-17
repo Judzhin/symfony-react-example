@@ -32,7 +32,8 @@ class TasksController extends AbstractController
      * @param Task $task
      * @return array
      */
-    private static function serialize(Task $task): array {
+    private static function serialize(Task $task): array
+    {
         return [
             'id' => $task->getId(),
             'name' => $task->getName(),
@@ -59,15 +60,26 @@ class TasksController extends AbstractController
     #[Route('/', name: 'persist', methods: ['POST'])]
     public function create(Request $request): Response
     {
-        $this->transformJsonBody($request);
-        $content = json_decode($request->getContent());
-        $task = (new Task)->setName($content->name);
-        $this->entityManager->persist($task);
-        $this->entityManager->flush();
-
         // return $this->createResponse(self::serialize($task));
-
         $builder = new JsonResponseBuilder;
+
+        try {
+            $this->transformJsonBody($request);
+            $content = json_decode($request->getContent());
+            $task = (new Task)->setName($content->name);
+            $this->entityManager->persist($task);
+            $this->entityManager->flush();
+        } catch (\Exception $exception) {
+            return $builder
+                // ->setStatus($exception->getCode())
+                ->error($exception->getMessage())
+                ->addError('code' , $exception->getCode())
+                ->addError('line' , $exception->getLine())
+                ->addError('file' , $exception->getFile())
+                ->addError('trace' , $exception->getTrace())
+                ->build();
+        }
+
         return $builder
             ->addData(self::serialize($task))
             ->success([
