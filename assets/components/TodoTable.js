@@ -33,7 +33,7 @@ function TodoTable() {
         e.preventDefault();
         if (addTodo.length) {
             context.createTodo({
-                task: addTodo
+                name: addTodo
             });
             setAddTodo('');
         }
@@ -63,7 +63,7 @@ function TodoTable() {
     const onEditKeyUpTextField = (e) => {
         if (13 === e.keyCode) {
             onEditChangeTextField(e);
-            doUpdateTodo({id: editIsShow, task: editTodo});
+            doUpdateTodo({id: editIsShow, name: editTodo});
         }
     }
 
@@ -79,7 +79,7 @@ function TodoTable() {
 
     return (
         <Fragment>
-            {/*<form onSubmit={(e) => {context.createTodo({task:addTodo}, e)}}>*/}
+            {/*<form onSubmit={(e) => {context.createTodo({name:addTodo}, e)}}>*/}
             <form onSubmit={doSubmitForm}>
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -103,20 +103,20 @@ function TodoTable() {
                                 <TableRow key={i} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell component="th" scope="row" onDoubleClick={() => {
                                         setEditIsShow(todo.id);
-                                        setEditTodo(todo.task);
+                                        setEditTodo(todo.name);
                                     }}>
                                         {editIsShow === todo.id ?
                                             <TextField value={editTodo} variant="standard"
                                                        fullWidth={true}
                                                        onKeyUp={onEditKeyUpTextField}
-                                                       onChange={onEditChangeTextField}/> : todo.task
+                                                       onChange={onEditChangeTextField}/> : todo.name
                                         }
                                     </TableCell>
                                     <TableCell component="th" scope="row" align="right">
                                         {editIsShow === todo.id ? (
                                             <Fragment>
                                                 <IconButton onClick={() => {
-                                                    doUpdateTodo({id: todo.id, task: editTodo})
+                                                    doUpdateTodo({id: todo.id, name: editTodo})
                                                 }}>
                                                     <DoneIcon/>
                                                 </IconButton>

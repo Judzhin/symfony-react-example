@@ -1,4 +1,5 @@
 import React, {Component, createContext} from 'react';
+import axios from "axios";
 
 export const TodoContext = createContext();
 
@@ -10,20 +11,24 @@ class TodoContextProvider extends Component {
      */
     constructor(props) {
         super(props);
-        let todos = [{
-            id: 1,
-            task: 'ToDo SomeThink'
-        }, {
-            id: 2,
-            task: 'Write a Code'
-        }, {
-            id: 3,
-            task: 'Drop machine'
-        }];
+        // let todos = [{
+        //     id: 1,
+        //     task: 'ToDo SomeThink'
+        // }, {
+        //     id: 2,
+        //     task: 'Write a Code'
+        // }, {
+        //     id: 3,
+        //     task: 'Drop machine'
+        // }];
         this.state = {
-            lastIdentifier: todos.length,
-            todos: todos
+            // lastIdentifier: todos.length,
+            todos: [] // todos
         }
+    }
+
+    componentDidMount() {
+        this.readTodo();
     }
 
     /**
@@ -43,6 +48,14 @@ class TodoContextProvider extends Component {
     // read
     readTodo() {
 
+        axios.get('/api/tasks')
+            .then(response => {
+                console.log('Load Done');
+                this.setState({todos: response.data})
+            })
+            .catch(err => {
+                // console.error(err);
+            });
     }
 
     /**
@@ -60,7 +73,7 @@ class TodoContextProvider extends Component {
 
         let data = [...this.state.todos];
         let todo = data.find(todo => todo.id === editTodo.id);
-        todo.task = editTodo.task
+        todo.name = editTodo.name
 
         this.setState({
             todos: data
