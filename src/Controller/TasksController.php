@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/tasks', name: 'tasks')]
 class TasksController extends AbstractController
@@ -43,7 +42,6 @@ class TasksController extends AbstractController
     {
         return $this->createResponse(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
     }
-
 
     /**
      * @param Request $request
