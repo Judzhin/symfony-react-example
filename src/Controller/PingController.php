@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PostController extends AbstractController
+class PingController extends AbstractController
 {
-    #[Route('/posts', name: 'posts')]
+    #[Route('/ping', name: 'ping')]
     public function index(): Response
     {
         return $this->json([
-            'ping' => 'test'
+            'ping' => new \DateTime
         ]);
     }
 }
