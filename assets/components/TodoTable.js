@@ -131,7 +131,7 @@ function TodoTable() {
                                             <Fragment>
                                                 <IconButton onClick={() => {
                                                     setEditIsShow(todo.id);
-                                                    setEditTodo(todo.task);
+                                                    setEditTodo(todo.name);
                                                 }}>
                                                     <EditIcon/>
                                                 </IconButton>

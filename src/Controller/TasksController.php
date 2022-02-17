@@ -61,11 +61,11 @@ class TasksController extends AbstractController
 
     /**
      * @param Request $request
-     * @param string $id
+     * @param int $id
      * @return JsonResponse
      */
     #[Route('/{id}', name: 'merge', methods: ['PUT'])]
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
         if (!$task = $this->taskRepository->findOneById($id)) {
             return $this->createNotFoundException('Task was not found!');
@@ -75,17 +75,17 @@ class TasksController extends AbstractController
         $content = json_decode($request->getContent());
         $task->setName($content->name);
         $this->entityManager->flush();
-        return $this->createResponse(self::serialize($task));
+        return $this->respondWithSuccess('Task was updated!');
 
     }
 
     /**
      * @param Request $request
-     * @param string $id
+     * @param int $id
      * @return JsonResponse
      */
     #[Route('/{id}', name: 'remove', methods: ['DELETE'])]
-    public function delete(Request $request, string $id): JsonResponse
+    public function delete(Request $request, int $id): JsonResponse
     {
         if (!$task = $this->taskRepository->findOneById($id)) {
             return $this->createNotFoundException('Task was not found!');
