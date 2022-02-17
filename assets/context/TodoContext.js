@@ -73,6 +73,7 @@ class TodoContextProvider extends Component {
      * @param editTodo
      */
     updateTodo(editTodo) {
+
         // let data = [];
         // this.state.todos.forEach(todo => {
         //     if (todo.id === editTodo.id) {
@@ -81,27 +82,54 @@ class TodoContextProvider extends Component {
         //     data.push(todo);
         // });
 
-        let data = [...this.state.todos];
-        let todo = data.find(todo => todo.id === editTodo.id);
-        todo.name = editTodo.name
+        // // Sync
+        // let data = [...this.state.todos];
+        // let todo = data.find(todo => todo.id === editTodo.id);
+        // todo.name = editTodo.name
+        //
+        // this.setState({
+        //     todos: data
+        // })
 
-        this.setState({
-            todos: data
-        })
+        // Async
+        axios.put(`/api/tasks/${editTodo.id}`, editTodo)
+            .then(response => {
+                let data = [...this.state.todos];
+                let todo = data.find(todo => todo.id === editTodo.id);
+                todo.name = response.data.name
+                this.setState({
+                    todos: data
+                })
+            })
     }
 
     // delete
     deleteTodo(deleteTodo) {
-        // let data = [...this.state.todos].filter(todo => todo.id !== deleteTodo.id);
-        let data = [...this.state.todos], todo = data.find(todo => {
-            return todo.id === deleteTodo.id;
-        });
+        // Sync
+        // // let data = [...this.state.todos].filter(todo => todo.id !== deleteTodo.id);
+        // let data = [...this.state.todos], todo = data.find(todo => {
+        //     return todo.id === deleteTodo.id;
+        // });
+        //
+        // data.splice(data.indexOf(todo), 1);
+        //
+        // this.setState({
+        //     todos: data
+        // })
 
-        data.splice(data.indexOf(todo), 1);
+        // Async
+        axios.delete(`/api/tasks/${deleteTodo.id}`, deleteTodo)
+            .then(response => {
+                let data = [...this.state.todos], todo = data.find(todo => {
+                    return todo.id === deleteTodo.id;
+                });
 
-        this.setState({
-            todos: data
-        })
+                data.splice(data.indexOf(todo), 1);
+
+                this.setState({
+                    todos: data
+                })
+            })
     }
 
     render() {

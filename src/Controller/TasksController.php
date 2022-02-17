@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,5 +57,43 @@ class TasksController extends AbstractController
         $this->entityManager->persist($task);
         $this->entityManager->flush();
         return $this->createResponse(self::serialize($task));
+    }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    #[Route('/{id}', name: 'merge', methods: ['PUT'])]
+    public function update(Request $request, string $id): JsonResponse
+    {
+        if (!$task = $this->taskRepository->findOneById($id)) {
+            return $this->createNotFoundException('Task was not found!');
+        }
+
+        $this->transformJsonBody($request);
+        $content = json_decode($request->getContent());
+        $task->setName($content->name);
+        $this->entityManager->flush();
+        return $this->createResponse(self::serialize($task));
+
+    }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    #[Route('/{id}', name: 'remove', methods: ['DELETE'])]
+    public function delete(Request $request, string $id): JsonResponse
+    {
+        if (!$task = $this->taskRepository->findOneById($id)) {
+            return $this->createNotFoundException('Task was not found!');
+        }
+
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+        return $this->respondWithSuccess('Task was deleted!');
+
     }
 }
