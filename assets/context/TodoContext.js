@@ -108,12 +108,15 @@ class TodoContextProvider extends Component {
         axios.put(`/api/tasks/${editTodo.id}`, editTodo)
             .then(response => {
                 if (response.data.success) {
-                    let data = [...this.state.todos];
-                    let todo = data.find(todo => todo.id === editTodo.id);
+                    let data = [...this.state.todos],
+                        todo = data.find(todo => todo.id === editTodo.id),
+                        oldName = todo.name;
                     todo.name = editTodo.name
                     this.setState({
                         todos: data,
-                        message: response.data.message
+                        message: [
+                            response.data.message, oldName, todo.name
+                        ]
                     })
                 }
             })
