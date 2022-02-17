@@ -68,7 +68,7 @@ class TasksController extends AbstractController
      * @param MessageBusInterface $bus
      * @return JsonResponse
      */
-    #[Route('/{id}', name: 'merge', methods: ['PUT'])]
+    #[Route('/{id}', name: 'merge', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function update(Request $request, int $id, MessageBusInterface $bus): JsonResponse
     {
         // Sync mode
@@ -93,7 +93,7 @@ class TasksController extends AbstractController
      * @param MessageBusInterface $bus
      * @return JsonResponse
      */
-    #[Route('/{id}', name: 'remove', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'remove', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Request $request, int $id, MessageBusInterface $bus): JsonResponse
     {
         //if (!$task = $this->taskRepository->findOneById($id)) {
@@ -106,7 +106,7 @@ class TasksController extends AbstractController
 
         // Async mode
         $bus->dispatch(new TaskDeleteMessage($id));
-        return $this->respondWithSuccess('Task was deleted!');
+        return $this->respondWithSuccess('Task has been deleted.');
 
     }
 }
