@@ -122,7 +122,10 @@ class TodoContextProvider extends Component {
             })
     }
 
-    // delete
+    /**
+     *
+     * @param deleteTodo
+     */
     deleteTodo(deleteTodo) {
         // Sync
         // // let data = [...this.state.todos].filter(todo => todo.id !== deleteTodo.id);
