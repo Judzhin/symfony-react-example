@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import TodoContextProvider, {TodoContext} from "../context/TodoContext";
 
 function DeleteDialog(props) {
+    const context = useContext(TodoContext)
     const doClose = () => {
         props.setDeleteConfirmationIsShow(false);
     }
-    const context = useContext(TodoContext)
     return (
         <Dialog onClose={doClose} fullWidth={true} maxWidth='sm' open={props.open} >
             <DialogTitle>

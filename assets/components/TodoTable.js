@@ -138,7 +138,6 @@ function TodoTable() {
                 </Table>
             </TableContainer>
 
-
             {deleteConfirmationIsShow && (<DeleteDialog
                 open={deleteConfirmationIsShow}
                 setDeleteConfirmationIsShow={setDeleteConfirmationIsShow}

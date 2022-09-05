@@ -5,7 +5,7 @@ namespace App\Builder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class JsonResponseBuilder
+class JsonBuilder
 {
     /**
      * Response Array
@@ -15,7 +15,7 @@ class JsonResponseBuilder
 
     /**
      * Status Code
-     * @var Integer
+     * @var int
      */
     private int $status;
 
@@ -50,7 +50,7 @@ class JsonResponseBuilder
      * Set Strict Mode
      *
      * @param bool $strictMode key
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     public function strictMode(bool $strictMode = true): static
     {
@@ -62,7 +62,7 @@ class JsonResponseBuilder
      * Add Meta
      * @param string $key key
      * @param mixed $value value
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     public function addMeta(string $key, mixed $value): static
     {
@@ -73,7 +73,7 @@ class JsonResponseBuilder
     /**
      * Merge Meta
      * @param array $meta meta array
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     public function mergeMeta(array $meta): static
     {
@@ -106,7 +106,7 @@ class JsonResponseBuilder
     /**
      * Merge Data
      * @param array $data data array
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     public function mergeData(array $data)
     {
@@ -120,7 +120,7 @@ class JsonResponseBuilder
      *
      * @param string $key key
      * @param mixed $value value
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     public function addHeader(string $key, mixed $value)
     {
@@ -186,9 +186,9 @@ class JsonResponseBuilder
      *
      * @param string $key Key
      * @param mixed $value Value
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
-    public function addError($key, $value)
+    public function addError($key, $value): static
     {
         if (!$this->error) {
             throw new \BadMethodCallException(__METHOD__ . ' you have to call error() method first before start adding errors.');
@@ -200,19 +200,19 @@ class JsonResponseBuilder
 
     /**
      * Set Response Status Code
-     * @param integer $status_code Status Code
-     * @return JsonResponseBuilder Current Instance
+     * @param integer $statusCode Status Code
+     * @return JsonBuilder Current Instance
      */
-    public function setStatus($status_code)
+    public function setStatus(int $statusCode)
     {
-        $this->status = (int)$status_code;
+        $this->status = (int)$statusCode;
         return $this;
     }
 
     /**
      * Set Success
      * @param bool $value
-     * @return JsonResponseBuilder Current Instance
+     * @return JsonBuilder Current Instance
      */
     protected function setSuccess(bool $value)
     {
@@ -227,8 +227,7 @@ class JsonResponseBuilder
 
     /**
      * Parse Meta
-     * @param  [type] &$data [description]
-     * @return [type]        [description]
+     * @param $data
      */
     protected function parseMeta(&$data)
     {
