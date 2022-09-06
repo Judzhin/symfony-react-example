@@ -34,7 +34,8 @@ class PingController extends AbstractController
                         ->add('number', '212 555-1234'))
                     ->add($factory->createObjectBuilder()
                         ->add('type', 'fax')
-                        ->add('number', '646 555-4567'))))
+                        ->add('number', '646 555-4567')))
+                ->add('active', true))
             ->build();
 
         return $this->json($jsonObject->toArray());
