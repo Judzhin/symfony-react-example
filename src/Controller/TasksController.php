@@ -24,7 +24,9 @@ class TasksController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param TaskRepository $taskRepository
      */
-    public function __construct(private EntityManagerInterface $entityManager, private TaskRepository $taskRepository)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private TaskRepository $taskRepository)
     {
     }
 

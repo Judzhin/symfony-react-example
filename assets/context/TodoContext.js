@@ -62,6 +62,7 @@ class TodoContextProvider extends Component {
         axios.post('/api/tasks/', newTodo)
             .then(response => {
                 let state = {
+                    success: response.data.success,
                     message: response.data.message
                 };
 
@@ -76,9 +77,10 @@ class TodoContextProvider extends Component {
                 }
 
                 this.setState(state);
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log(error);
-        })
+            })
     }
 
     /**
