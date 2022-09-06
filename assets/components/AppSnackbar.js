@@ -30,7 +30,8 @@ function AppSnackbar(props) {
                         </Fragment>
                     )) : context.message)}
                     action={[
-                        <Button key={'dismiss'} onClick={closeHandler}>Dismiss</Button>
+                        <Button key={'dismiss'}
+                                onClick={closeHandler}>Dismiss</Button>
                     ]}/>
             )}
         </Snackbar>
