@@ -39,6 +39,7 @@ class TasksController extends AbstractController
         return [
             'id' => $task->getId(),
             'name' => $task->getName(),
+            'description' => $task->getDescription(),
         ];
     }
 
@@ -68,7 +69,9 @@ class TasksController extends AbstractController
         try {
             $this->transformJsonBody($request);
             $content = json_decode($request->getContent());
-            $task = (new Task)->setName($content->name);
+            $task = (new Task)
+                ->setName($content->name)
+                ->setDescription($content->description);
             $this->entityManager->persist($task);
             $this->entityManager->flush();
         } catch (\Exception $exception) {
@@ -112,7 +115,7 @@ class TasksController extends AbstractController
         //$this->entityManager->flush();
 
         // Async mode
-        $bus->dispatch(new TaskUpdateMessage($id, $content->name));
+        $bus->dispatch(new TaskUpdateMessage($id, $content->name, $content->description));
 
         // return $this->respondWithSuccess('Task was updated!');
 

@@ -20,6 +20,10 @@ class Task
     #[Groups('task')]
     private string $name;
 
+    #[ORM\Column(type: 'string', length: 500)]
+    #[Groups('task')]
+    private string $description;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +44,24 @@ class Task
     public function setName(string $name): Task
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return Task
+     */
+    public function setDescription(string $description): Task
+    {
+        $this->description = $description;
         return $this;
     }
 }

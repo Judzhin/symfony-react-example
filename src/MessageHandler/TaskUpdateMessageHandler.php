@@ -21,7 +21,10 @@ final class TaskUpdateMessageHandler implements MessageHandlerInterface
     {
         /** @var Task $task */
         if ($task = $this->entityManager->find(Task::class, $message->getId())) {
-            $task->setName($message->getName());
+            $task
+                ->setName($message->getName())
+                ->setDescription($message->getDescription())
+            ;
             $this->entityManager->flush();
         }
     }
