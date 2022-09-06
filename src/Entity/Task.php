@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
@@ -16,7 +18,7 @@ class Task
     #[Groups('task')]
     private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 200)]
+    #[ORM\Column(type: 'string', length: 10, unique: true)]
     #[Groups('task')]
     private string $name;
 
@@ -63,5 +65,18 @@ class Task
     {
         $this->description = $description;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    #[Pure] #[ArrayShape(['id' => "int|null", 'name' => "string", 'description' => "string"])]
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+        ];
     }
 }

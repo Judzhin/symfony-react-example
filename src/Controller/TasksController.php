@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Builder\JsonBuilder;
 use App\Entity\Task;
+use App\Form\TaskType;
 use App\Message\TaskDeleteMessage;
 use App\Message\TaskUpdateMessage;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +37,15 @@ class TasksController extends AbstractController
      * @param Task $task
      * @return array
      */
+    #[Pure] #[ArrayShape(['id' => "\int|null", 'name' => "string", 'description' => "string"])]
     private static function serialize(Task $task): array
     {
-        return [
-            'id' => $task->getId(),
-            'name' => $task->getName(),
-            'description' => $task->getDescription(),
-        ];
+        return $task->toArray();
+        //return [
+        //    'id' => $task->getId(),
+        //    'name' => $task->getName(),
+        //    'description' => $task->getDescription(),
+        //];
     }
 
     /**
@@ -69,6 +74,28 @@ class TasksController extends AbstractController
         try {
             $this->transformJsonBody($request);
             $content = json_decode($request->getContent());
+
+            $form = $this->createForm(TaskType::class);
+            // $form->handleRequest($request);
+            $form->submit((array)$content);
+
+            if (!$form->isValid()) {
+
+                $builder
+                    ->error('Validation error!');
+
+                // $errors = [];
+
+                foreach ($form->getErrors(true, true) as $error) {
+                    // $propName = $error->getOrigin()->getName();
+                    // $errors[$propName] = $error->getMessage();
+                    $builder->addError($error->getOrigin()->getName(), $error->getMessage());
+                }
+
+                return $builder
+                    ->build();
+            }
+
             $task = (new Task)
                 ->setName($content->name)
                 ->setDescription($content->description);

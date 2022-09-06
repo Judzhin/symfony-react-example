@@ -19,14 +19,14 @@ import DeleteDialog from "./DeleteDialog";
 
 function TodoTable() {
     const context = useContext(TodoContext);
-    const initialTodo = {name: '', description: ''};
-    const [addTodo, setAddTodo] = useState(initialTodo);
-    const [addTodoName, setAddTodoName] = useState('');
-    const [addTodoDescription, setAddTodoDescription] = useState('');
+    const schemaTodo = {name: '', description: ''};
+    const [addTodo, setAddTodo] = useState(schemaTodo);
+    // const [addTodoName, setAddTodoName] = useState('');
+    // const [addTodoDescription, setAddTodoDescription] = useState('');
     const [editIsShow, setEditIsShow] = useState(false);
-    const [editTodo, setEditTodo] = useState(initialTodo);
-    const [editTodoName, setEditTodoName] = useState('');
-    const [editTodoDescription, setEditTodoDescription] = useState('');
+    const [editTodo, setEditTodo] = useState(schemaTodo);
+    // const [editTodoName, setEditTodoName] = useState('');
+    // const [editTodoDescription, setEditTodoDescription] = useState('');
     const [deleteConfirmationIsShow, setDeleteConfirmationIsShow] = useState(false);
     const [deleteTodo, setDeleteTodo] = useState({});
 
@@ -41,7 +41,7 @@ function TodoTable() {
             // setAddTodoName('');
             // setAddTodoDescription('');
             context.createTodo(addTodo);
-            setAddTodo(initialTodo)
+            setAddTodo(schemaTodo)
         }
     }
 
@@ -72,7 +72,7 @@ function TodoTable() {
         context.updateTodo(editTodo)
         setEditIsShow(false);
         // setEditTodoName('');
-        setEditTodo(initialTodo);
+        setEditTodo(schemaTodo);
     }
 
     return (
@@ -169,7 +169,7 @@ function TodoTable() {
                                                             <IconButton onClick={() => {
                                                                 setEditIsShow(false);
                                                                 // setEditTodoName('');
-                                                                setEditTodo(initialTodo);
+                                                                setEditTodo(schemaTodo);
                                                             }}>
                                                                 <CancelIcon/>
                                                             </IconButton>

@@ -74,6 +74,13 @@ class TodoContextProvider extends Component {
 
                 if (response.data.error) {
                     console.error(response.data.error);
+                    // let errs = [];
+                    // for (let field in ['name', 'description']) {
+                    //     if (field in response.data.error) {
+                    //         errs.push(response.data.error[field])
+                    //     }
+                    // }
+                    // state.message = errs.join(', ')
                 }
 
                 this.setState(state);
@@ -150,9 +157,9 @@ class TodoContextProvider extends Component {
         axios.delete(`/api/tasks/${deleteTodo.id}`, deleteTodo)
             .then(response => {
                 if (response.data.success) {
-                    let data = [...this.state.todos], todo = data.find(todo => {
-                        return todo.id === deleteTodo.id;
-                    });
+                    let data = [...this.state.todos], todo = data.find(todo => { // todo = data.find(todo => todo.id === deleteTodo.id),
+                            return todo.id === deleteTodo.id;
+                        });
 
                     data.splice(data.indexOf(todo), 1);
 
