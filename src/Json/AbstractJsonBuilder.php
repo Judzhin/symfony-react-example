@@ -2,6 +2,7 @@
 
 namespace App\Json;
 
+use JetBrains\PhpStorm\Pure;
 use Laminas\Stdlib\ArrayObject;
 
 abstract class AbstractJsonBuilder extends ArrayObject implements JsonBuilderInterface
@@ -14,5 +15,14 @@ abstract class AbstractJsonBuilder extends ArrayObject implements JsonBuilderInt
     {
         $this->offsetSet($name, null);
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @return array|JsonObject
+     */
+    #[Pure] public function build(): JsonObject
+    {
+        return new JsonObject($this->getArrayCopy());
     }
 }

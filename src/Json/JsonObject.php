@@ -8,19 +8,35 @@ use Laminas\Stdlib\ArrayObject;
 class JsonObject extends ArrayObject
 {
     /**
-     * @return object|array
+     * @param $values
+     * @return mixed
      */
-    #[Pure] public function toArray(): object|array
+    public function convert($values): mixed
     {
-        $result = [];
-        foreach ($this->getArrayCopy() as $item => $value) {
-            if ($value instanceof JsonBuilderInterface) {
-                $jsonObject = $value->build();
-                $value = $jsonObject->getArrayCopy();
+        if (is_array($values)) {
+            $result = [];
+            foreach ($values as $item => $value) {
+                $result[$item] = $this->convert($value);
             }
-            $result[$item] = $value;
+            return $result;
         }
 
-        return $result;
+        if ($values instanceof JsonBuilderInterface) {
+            return $this->convert($values->build()->getArrayCopy());
+        }
+
+        if ($values instanceof JsonObject) {
+            return $values->getArrayCopy();
+        }
+
+        return $values;
+    }
+
+    /**
+     * @return array
+     */
+    #[Pure] public function toArray(): array
+    {
+        return $this->convert($this->getArrayCopy());
     }
 }
