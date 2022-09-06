@@ -2,6 +2,7 @@
 
 namespace App\Builder;
 
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,6 +45,14 @@ class JsonBuilder
             'data' => [],
             'message' => null,
         ];
+    }
+
+    /**
+     * @return JsonBuilder
+     */
+    #[Pure] public static function factory(): JsonBuilder
+    {
+        return new self;
     }
 
     /**
@@ -203,7 +212,7 @@ class JsonBuilder
      * @param integer $statusCode Status Code
      * @return JsonBuilder Current Instance
      */
-    public function setStatus(int $statusCode)
+    public function setStatus(int $statusCode): static
     {
         $this->status = (int)$statusCode;
         return $this;
@@ -214,7 +223,7 @@ class JsonBuilder
      * @param bool $value
      * @return JsonBuilder Current Instance
      */
-    protected function setSuccess(bool $value)
+    protected function setSuccess(bool $value): static
     {
         $this->data['success'] = $value;
 

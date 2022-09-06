@@ -3,11 +3,13 @@ import {Button, Snackbar, SnackbarContent} from "@mui/material";
 import {TodoContext} from "../context/TodoContext";
 
 function checkLevel(level) {
-    switch (false) {
+    switch (level) {
         case true:
             return 'green';
         case false:
             return 'red';
+        default:
+            return 'dark';
     }
 }
 
@@ -22,13 +24,14 @@ function AppSnackbar(props) {
                   onClose={closeHandler}>
             {context.message && (
                 <SnackbarContent
-                    style={{backgroundColor: checkLevel(context.success)}}
-                    message={(Array.isArray(context.message) ? context.message.map((msg, idx) => (
-                        <Fragment key={idx}>
-                            <span>{msg}</span>
-                            <br/>
-                        </Fragment>
-                    )) : context.message)}
+                    // style={{backgroundColor: checkLevel(context.success)}}
+                    message={context.message}
+                    // message={(Array.isArray(context.message) ? context.message.map((msg, idx) => (
+                    //     <Fragment key={idx}>
+                    //         <span>{msg}</span>
+                    //         <br/>
+                    //     </Fragment>
+                    // )) : context.message)}
                     action={[
                         <Button key={'dismiss'}
                                 onClick={closeHandler}>Dismiss</Button>

@@ -31,8 +31,8 @@ DeleteDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     setDeleteConfirmationIsShow: PropTypes.func.isRequired,
     todo: PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
     })
 }
 

@@ -71,12 +71,12 @@ function TodoTable() {
                         <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                             <TableCell component="th" scope="row">
                                 <form onSubmit={onCreateSubmit}>
-                                    <TextField label="Write a new task" variant="standard" fullWidth={true}
-                                        // onChange={e => setAddTodo(e.target.value)}/>
+                                    <TextField label="Write a new task"
                                                value={addTodo}
-                                               onChange={(e) => {
+                                               onChange={(e) => { // onChange={e => setAddTodo(e.target.value)}/>
                                                    setAddTodo(e.target.value);
-                                               }}/>
+                                               }} variant="standard" fullWidth={true}
+                                    />
                                 </form>
                             </TableCell>
                             <TableCell component="th" scope="row" align="center" width={80}>
