@@ -50,7 +50,7 @@ class JsonBuilder
     /**
      * @return JsonBuilder
      */
-    #[Pure] public static function factory(): JsonBuilder
+    #[Pure] public static function factory(): static
     {
         return new self;
     }
@@ -117,7 +117,7 @@ class JsonBuilder
      * @param array $data data array
      * @return JsonBuilder Current Instance
      */
-    public function mergeData(array $data)
+    public function mergeData(array $data): static
     {
         $this->parseMeta($data);
         $this->data['data'] = array_merge($this->data['data'], $data);
@@ -131,7 +131,7 @@ class JsonBuilder
      * @param mixed $value value
      * @return JsonBuilder Current Instance
      */
-    public function addHeader(string $key, mixed $value)
+    public function addHeader(string $key, mixed $value): static
     {
         $this->headers[$key] = $value;
         return $this;
@@ -141,7 +141,7 @@ class JsonBuilder
      * @param string|array $message
      * @return $this
      */
-    protected function setMessage(string|array $message)
+    protected function setMessage(string|array $message): static
     {
         if ($message) {
             $this->data['message'] = $message;
@@ -197,7 +197,7 @@ class JsonBuilder
      * @param mixed $value Value
      * @return JsonBuilder Current Instance
      */
-    public function addError($key, $value): static
+    public function addError(string $key, mixed $value): static
     {
         if (!$this->error) {
             throw new \BadMethodCallException(__METHOD__ . ' you have to call error() method first before start adding errors.');
@@ -236,9 +236,10 @@ class JsonBuilder
 
     /**
      * Parse Meta
-     * @param $data
+     * @param array $data
+     * @return void
      */
-    protected function parseMeta(&$data)
+    protected function parseMeta(array &$data): void
     {
         if (isset($data['meta'])) {
             $meta = $data['meta'];
