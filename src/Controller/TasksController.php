@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Builder\JsonBuilder;
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Json\Json;
 use App\Message\TaskDeleteMessage;
 use App\Message\TaskUpdateMessage;
 use App\Repository\TaskRepository;
@@ -29,7 +30,7 @@ class TasksController extends AbstractController
      */
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TaskRepository $taskRepository)
+        private TaskRepository         $taskRepository)
     {
     }
 
@@ -56,9 +57,16 @@ class TasksController extends AbstractController
     {
         // return $this->createResponse(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
 
-        $builder = new JsonBuilder;
-        $builder->addData(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
-        return $builder->build();
+        // $builder = new JsonBuilder;
+        // $builder->addData(array_map([$this, 'serialize'], $this->taskRepository->findAll()));
+        // return $builder->build();
+
+        $factory = Json::createBuilderFactory();
+        $jsonObject = $factory->createObjectBuilder()
+            ->add('success', true)
+            ->add('data', array_map([$this, 'serialize'], $this->taskRepository->findAll()))
+            ->build();
+        return $this->json($jsonObject->getArrayCopy());
     }
 
     /**
@@ -83,7 +91,6 @@ class TasksController extends AbstractController
 
                 $builder
                     ->error('Validation error!');
-
                 // $errors = [];
 
                 foreach ($form->getErrors(true, true) as $error) {
@@ -105,10 +112,10 @@ class TasksController extends AbstractController
             return $builder
                 // ->setStatus($exception->getCode())
                 ->error($exception->getMessage())
-                ->addError('code' , $exception->getCode())
-                ->addError('line' , $exception->getLine())
-                ->addError('file' , $exception->getFile())
-                ->addError('trace' , $exception->getTrace())
+                ->addError('code', $exception->getCode())
+                ->addError('line', $exception->getLine())
+                ->addError('file', $exception->getFile())
+                ->addError('trace', $exception->getTrace())
                 ->build();
         }
 
